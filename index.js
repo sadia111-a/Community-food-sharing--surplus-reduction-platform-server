@@ -34,6 +34,14 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+
+    app.post("/foods", async (req, res) => {
+      const newFood = req.body;
+      console.log(newFood);
+      const result = await foodCollection.insertOne(newFood);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
