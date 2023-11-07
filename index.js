@@ -36,23 +36,23 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/foods/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const options = {
-        projection: {
-          foodName: 1,
-          donation_money: 1,
-          food_id: 1,
-          location: 1,
-          date: 1,
-          email: 1,
-          food_img: 1,
-        },
-      };
-      const result = await foodCollection.findOne(query, options);
-      res.send(result);
-    });
+    // app.get("/foods/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) };
+    //   const options = {
+    //     projection: {
+    //       foodName: 1,
+    //       donation_money: 1,
+    //       food_id: 1,
+    //       location: 1,
+    //       date: 1,
+    //       email: 1,
+    //       food_img: 1,
+    //     },
+    //   };
+    //   const result = await foodCollection.findOne(query, options);
+    //   res.send(result);
+    // });
 
     // food requests
     app.get("/requests", async (req, res) => {
