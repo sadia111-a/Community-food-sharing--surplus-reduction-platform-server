@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -28,6 +28,7 @@ async function run() {
     await client.connect();
 
     const foodCollection = client.db("foodSharing").collection("foods");
+    const requestCollection = client.db("foodSharing").collection("requests");
 
     app.get("/foods", async (req, res) => {
       const cursor = foodCollection.find();
@@ -35,10 +36,35 @@ async function run() {
       res.send(result);
     });
 
+    // app.get("/foods/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) };
+    //   const options = {
+    //     projection: {
+    //       foodName: 1,
+    //       donation_money: 1,
+    //       food_id: 1,
+    //       location: 1,
+    //       date: 1,
+    //       email: 1,
+    //       food_img: 1,
+    //     },
+    //   };
+    //   const result = await foodCollection.findOne(query, options);
+    //   res.send(result);
+    // });
+
     app.post("/foods", async (req, res) => {
       const newFood = req.body;
       console.log(newFood);
       const result = await foodCollection.insertOne(newFood);
+      res.send(result);
+    });
+
+    app.post("/requests", async (req, res) => {
+      const foodRequest = req.body;
+      console.log(foodRequest);
+      const result = await requestCollection.insertOne(foodRequest);
       res.send(result);
     });
 
