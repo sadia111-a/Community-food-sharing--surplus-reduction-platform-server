@@ -54,6 +54,17 @@ async function run() {
     //   res.send(result);
     // });
 
+    // food requests
+    app.get("/requests", async (req, res) => {
+      console.log(req.query.email);
+      let query = {};
+      if (req.query?.email) {
+        query = { email: req.query.email };
+      }
+      const result = await requestCollection.find(query).toArray();
+      res.send(result);
+    });
+
     app.post("/foods", async (req, res) => {
       const newFood = req.body;
       console.log(newFood);
@@ -65,6 +76,14 @@ async function run() {
       const foodRequest = req.body;
       console.log(foodRequest);
       const result = await requestCollection.insertOne(foodRequest);
+      res.send(result);
+    });
+
+    // Delete food request
+    app.delete("/requests/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await requestCollection.deleteOne(query);
       res.send(result);
     });
 
