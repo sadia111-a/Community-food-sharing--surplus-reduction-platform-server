@@ -79,6 +79,28 @@ async function run() {
       res.send(result);
     });
 
+    // update food
+    app.put("/foods/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedFood = req.body;
+      const food = {
+        $set: {
+          food_img: updatedFood.food_img,
+          food_name: updatedFood.food_name,
+          donator_img: updatedFood.donator_img,
+          donator_name: updatedFood.donator_name,
+          food_quantity: updatedFood.food_quantity,
+          location: updatedFood.location,
+          expired_date: updatedFood.expired_date,
+          quality: updatedFood.quality,
+        },
+      };
+      const result = await foodCollection.updateOne(filter, food, options);
+      res.send(result);
+    });
+
     // Delete food request
     app.delete("/requests/:id", async (req, res) => {
       const id = req.params.id;
@@ -86,6 +108,14 @@ async function run() {
       const result = await requestCollection.deleteOne(query);
       res.send(result);
     });
+
+    // Delete food to manage
+    // app.delete("/foods/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: new ObjectId(id) };
+    //   const result = await foodCollection.deleteOne(query);
+    //   res.send(result);
+    // });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
