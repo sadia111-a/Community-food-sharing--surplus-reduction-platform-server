@@ -101,6 +101,21 @@ async function run() {
       res.send(result);
     });
 
+    // update food status
+    app.patch("/requests/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updatedFood = req.body;
+      console.log(updatedFood);
+      const Food = {
+        $set: {
+          status: updatedFood.status,
+        },
+      };
+      const result = await requestCollection.updateOne(filter, Food);
+      res.send(result);
+    });
+
     // Delete food request
     app.delete("/requests/:id", async (req, res) => {
       const id = req.params.id;
